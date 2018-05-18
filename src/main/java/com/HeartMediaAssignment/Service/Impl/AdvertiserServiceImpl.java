@@ -1,10 +1,14 @@
 package com.HeartMediaAssignment.Service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.HeartMediaAssignment.Entity.Advertiser;
+import com.HeartMediaAssignment.Exception.AdvertiserFieldsNullException;
+import com.HeartMediaAssignment.Exception.AdvertiserNotFoundException;
+import com.HeartMediaAssignment.Exception.CannotPerformTransactionException;
 import com.HeartMediaAssignment.Mapper.AdvertiserMapper;
 import com.HeartMediaAssignment.Service.AdvertiserService;
 
@@ -20,17 +24,32 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 
 	@Override
 	public void createAdvertiser(Advertiser advertiser) {
+		if(advertiser.getCreditScore() == null || advertiser.getName() == null || advertiser.getCompanyName() == null)
+		{
+			throw new AdvertiserFieldsNullException();
+		}
 		 advertiserMapper.insertAdvertiser(advertiser);
 	}
 
 	@Override
 	public Advertiser getAdvertiser(String name) {
-		return advertiserMapper.getAdvertiser(name);
+		
+		Advertiser advertiser =  advertiserMapper.getAdvertiser(name);
+		if(advertiser == null) {
+			throw new AdvertiserNotFoundException();
+		}
+		return advertiser;
 	}
 
 	@Override
 	public List<Advertiser> getAllAdvertiser() {
-		return advertiserMapper.getAllAdvertiser();
+		
+		List<Advertiser> advertiserList = new ArrayList<Advertiser> ();
+		advertiserList = advertiserMapper.getAllAdvertiser();
+		if (advertiserList.size() == 0) {
+			throw new AdvertiserNotFoundException();
+		}
+		return advertiserList;
 	}
 
 	@Override
@@ -51,8 +70,11 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 	@Override
 	public void deleteAdvertiser(String name) {
 		Advertiser oldAdvertiser = advertiserMapper.getAdvertiser(name);
+		
 		if(oldAdvertiser != null) {
 			advertiserMapper.deleteAdvertiser(name);
+		} else {
+			throw new AdvertiserNotFoundException();
 		}
 		
 	}
@@ -68,8 +90,10 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 		}
 		if(oldAdvertiser.getCreditScore() >= validateCreditScore) {
 			return true;
+		} else {
+			throw new CannotPerformTransactionException();
 		}
-		return false;
+		
 	}
 	
 	

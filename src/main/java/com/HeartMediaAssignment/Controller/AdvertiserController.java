@@ -1,6 +1,7 @@
 package com.HeartMediaAssignment.Controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.HeartMediaAssignment.Entity.Advertiser;
+import com.HeartMediaAssignment.Exception.AdvertiserFieldsNullException;
+import com.HeartMediaAssignment.Exception.AdvertiserNotFoundException;
 import com.HeartMediaAssignment.Service.AdvertiserService;
 
 @RestController
@@ -32,7 +35,8 @@ public class AdvertiserController {
 	
 	@RequestMapping(value = "/advertiser/{name}", method = RequestMethod.GET)
 	public Advertiser getAdvertiser(@PathVariable String name) {
-		return advertiserService.getAdvertiser(name);
+		Advertiser advertiser = advertiserService.getAdvertiser(name);
+		return advertiser;
 	}
 	
 	@RequestMapping(value = "/advertiser", method = RequestMethod.GET)
