@@ -12,6 +12,7 @@ import com.HeartMediaAssignment.Service.AdvertiserService;
 public class AdvertiserServiceImpl implements AdvertiserService {
 	
 	private AdvertiserMapper advertiserMapper;
+	private static final Integer FixedCreditLimit = 500;
 	
 	public AdvertiserServiceImpl(AdvertiserMapper advertiserMapper) {
 		this.advertiserMapper = advertiserMapper;
@@ -59,7 +60,13 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 	@Override
 	public boolean checkAdvertiserCreditStatus(String name, Integer creditScore) {
 		Advertiser oldAdvertiser = advertiserMapper.getAdvertiser(name);
-		if(oldAdvertiser.getCreditScore() >= creditScore) {
+		Integer validateCreditScore;
+		if(creditScore != null) {
+			validateCreditScore = creditScore;
+		} else {
+			validateCreditScore = FixedCreditLimit;
+		}
+		if(oldAdvertiser.getCreditScore() >= validateCreditScore) {
 			return true;
 		}
 		return false;
