@@ -1,0 +1,1 @@
+create table advertiser(name varchar(255) not null,company_name varchar(255) not null,credit_score int not null, primary key (name));
