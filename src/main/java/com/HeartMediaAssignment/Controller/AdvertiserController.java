@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.HeartMediaAssignment.Entity.Advertiser;
-import com.HeartMediaAssignment.Exception.AdvertiserFieldsNullException;
-import com.HeartMediaAssignment.Exception.AdvertiserNotFoundException;
 import com.HeartMediaAssignment.Service.AdvertiserService;
 
 @RestController
