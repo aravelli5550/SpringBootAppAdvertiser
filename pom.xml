@@ -123,6 +123,7 @@
 			</executions>
 			</plugin>
 		</plugins>
+		<finalName>advertiser-spring-boot-app</finalName>
 	</build>
 
 
