@@ -55,6 +55,9 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 	@Override
 	public void updateAdvertiser(String name,Advertiser advertiser) {
 		Advertiser oldAdvertiser = advertiserMapper.getAdvertiser(name);
+		if(oldAdvertiser== null) {
+			throw new AdvertiserNotFoundException();
+		}
 		advertiser.setName(oldAdvertiser.getName());
 		if(advertiser.getCreditScore() != null && advertiser.getCompanyName() != null) {
 			//do nothing

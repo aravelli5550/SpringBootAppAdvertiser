@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.HeartMediaAssignment.Entity.Advertiser;
 import com.HeartMediaAssignment.Exception.AdvertiserFieldsNullException;
 import com.HeartMediaAssignment.Exception.AdvertiserNotFoundException;
+import com.HeartMediaAssignment.Exception.CannotPerformTransactionException;
 import com.HeartMediaAssignment.Mapper.AdvertiserMapper;
 
 
@@ -104,4 +105,108 @@ public class AdvertiserServiceImplTest {
 		ad = advertiserServiceImpl.getAllAdvertiser();
 		
   	}
+	
+	@Test
+	public void updateAdvertiser() {
+		
+		Advertiser ad = new Advertiser();
+		ad.setCompanyName("RandomUpdate");
+		ad.setCreditScore(1000);
+		ad.setName("Random");
+		
+		Advertiser mocked = new Advertiser();
+		mocked.setCompanyName("Random1");
+		mocked.setCreditScore(1000);
+		mocked.setName("Random");
+		
+		String name = "Random";
+		(when(advertiserMapper.getAdvertiser(name))).thenReturn(mocked);
+		doNothing().when(advertiserMapper).updateAdvertiser(ad);
+		advertiserServiceImpl.updateAdvertiser(name, ad);
+		verify(advertiserMapper,times(1)).updateAdvertiser(ad);
+		
+  	}
+	
+	@Test(expected = AdvertiserNotFoundException.class)
+	public void updateAdvertiser_Failure() {
+		
+		Advertiser ad = new Advertiser();
+		ad.setCompanyName("RandomUpdate");
+		ad.setCreditScore(1000);
+		ad.setName("Random");
+		
+		String name = "Random";
+		(when(advertiserMapper.getAdvertiser(name))).thenReturn(null);
+		advertiserServiceImpl.updateAdvertiser(name, ad);
+		
+		
+  	}
+	
+	@Test
+	public void deleteAdvertiser_Success() {
+		
+		Advertiser mocked = new Advertiser();
+		mocked.setCompanyName("Random1");
+		mocked.setCreditScore(1000);
+		mocked.setName("Random");
+		
+		String name = "Random";
+		(when(advertiserMapper.getAdvertiser(name))).thenReturn(mocked);
+		doNothing().when(advertiserMapper).deleteAdvertiser(name);
+		advertiserServiceImpl.deleteAdvertiser(name);
+		verify(advertiserMapper,times(1)).deleteAdvertiser(name);
+		
+		
+  	}
+	
+	@Test(expected = AdvertiserNotFoundException.class)
+	public void deleteAdvertiser_Failure() {
+		
+		Advertiser mocked = new Advertiser();
+		mocked.setCompanyName("Random1");
+		mocked.setCreditScore(1000);
+		mocked.setName("Random");
+		
+		String name = "Random";
+		(when(advertiserMapper.getAdvertiser(name))).thenReturn(null);
+		advertiserServiceImpl.deleteAdvertiser(name);
+		
+		
+  	}
+	
+	@Test
+	public void checkAdvertiserCreditStatus_Success() {
+		
+		Advertiser mocked = new Advertiser();
+		mocked.setCompanyName("Random1");
+		mocked.setCreditScore(1000);
+		mocked.setName("Random");
+		
+		String name = "Random";
+		Integer creditLimit = 900;
+		(when(advertiserMapper.getAdvertiser(name))).thenReturn(mocked);
+		
+		boolean status = advertiserServiceImpl.checkAdvertiserCreditStatus(name, creditLimit);
+		
+		assertEquals(true, status);
+		
+		
+  	}
+	
+	@Test(expected = CannotPerformTransactionException.class)
+	public void checkAdvertiserCreditStatus_Failure() {
+		
+		Advertiser mocked = new Advertiser();
+		mocked.setCompanyName("Random1");
+		mocked.setCreditScore(1000);
+		mocked.setName("Random");
+		
+		String name = "Random";
+		Integer creditLimit = 1200;
+		(when(advertiserMapper.getAdvertiser(name))).thenReturn(mocked);
+		
+		advertiserServiceImpl.checkAdvertiserCreditStatus(name, creditLimit);
+		
+  	}
+	
 }
