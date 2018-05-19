@@ -143,6 +143,46 @@ public class AdvertiserServiceImplTest {
   	}
 	
 	@Test
+	public void updateAdvertiser_whenCompanyNameisNull() {
+		
+		Advertiser ad = new Advertiser();
+		ad.setCompanyName(null);
+		ad.setCreditScore(1000);
+		ad.setName("Random");
+		
+		Advertiser mocked = new Advertiser();
+		mocked.setCompanyName("Random1");
+		mocked.setCreditScore(1000);
+		mocked.setName("Random");
+		
+		String name = "Random";
+		(when(advertiserMapper.getAdvertiser(name))).thenReturn(mocked);
+		advertiserServiceImpl.updateAdvertiser(name, ad);
+		verify(advertiserMapper,times(1)).updateAdvertiser(ad);
+		
+  	}
+	
+	@Test
+	public void updateAdvertiser_whenCreditLimitisNull() {
+		
+		Advertiser ad = new Advertiser();
+		ad.setCompanyName("RandomUpdate");
+		ad.setCreditScore(null);
+		ad.setName("Random");
+		
+		Advertiser mocked = new Advertiser();
+		mocked.setCompanyName("Random1");
+		mocked.setCreditScore(1000);
+		mocked.setName("Random");
+		
+		String name = "Random";
+		(when(advertiserMapper.getAdvertiser(name))).thenReturn(mocked);
+		advertiserServiceImpl.updateAdvertiser(name, ad);
+		verify(advertiserMapper,times(1)).updateAdvertiser(ad);
+		
+  	}
+	
+	@Test
 	public void deleteAdvertiser_Success() {
 		
 		Advertiser mocked = new Advertiser();
