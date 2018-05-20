@@ -8,6 +8,7 @@ Modules Used within the App are:
 5) Maven
 6) Swagger 2
 7) Docker
+8) Flyway
 
 There are Six Endpoint in the API,
 
@@ -44,4 +45,9 @@ Steps to Run this App:
 1)git clone Repo
 2) If using IDE import as Maven Application. Run the Maven Build mvn clean install. Build the war and generate jacoco templates
 3) Run as the Spring boot App.
+
+For the Extra Credits:
+Wrote a DockerFile and couple of steps to build the docker Image. Used Flyway to DB Migrations.
+
+For Actuators its configured on Port 8090. App is hosted on port 8080.
 	
